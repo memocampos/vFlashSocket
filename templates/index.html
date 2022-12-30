@@ -11,7 +11,9 @@
 <body>
 
 <script type="text/javascript" charset="utf-8">
-    var socket = io();
+    namespace = '/test';
+    var socket = io(namespace);
+
     socket.on('connect', function() {
         console.log("ESTAMOS BIEN CONECTADOS");
 
@@ -24,7 +26,17 @@
     });
 
 
-    socket.on('event', function(value) {
+    socket.on('boradcastevent',function(value) {
+        console.log("Broadcaset event: " + value);
+                console.log(value);
+        document.getElementById("lname").value = value;
+        if (value == 'false')
+            document.getElementById("myonoffswitch").checked = false;
+        if (value == 'true')
+            document.getElementById("myonoffswitch").checked = true;
+    });
+
+    socket.on('event',function(value) {
         console.log(value);
         document.getElementById("lname").value = value;
         if (value == 'false')
@@ -33,6 +45,8 @@
             document.getElementById("myonoffswitch").checked = true;
 
     });
+
+
 
 
 
@@ -75,7 +89,7 @@ function actionText()
   <label for="lname">Received Value:</label>
   <input type="text" id="lname" name="lname"><br><br>
 <script>
-    //document.getElementById("fname").value
+
 
         const js = document.querySelector('#myonoffswitch');
         js.onclick = () => {
