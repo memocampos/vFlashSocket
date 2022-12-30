@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css"href="/static/styles.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WORKING WITH SOCKETS PYTHON-FLASK-JAVASCRIPT</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<script type="text/javascript" charset="utf-8">
+    var socket = io();
+    socket.on('connect', function() {
+        console.log("ESTAMOS BIEN CONECTADOS");
+
+
+
+    });
+
+    socket.on('disconnect', function() {
+        console.log("YA VALIO LA CONEXION ENTRE NOSOTROS");
+    });
+
+
+    socket.on('event', function(value) {
+        console.log(value);
+        document.getElementById("lname").value = value;
+        if (value == 'false')
+            document.getElementById("myonoffswitch").checked = false;
+        if (value == 'true')
+            document.getElementById("myonoffswitch").checked = true;
+
+    });
+
+
+
+
+
+function actionText()
+{
+    let value = document.getElementById("fname").value
+    console.log("Action Text triggered",value);
+    socket.emit('event', value);
+}
+
+</script>
+
+
+
+
+
+
+<h1>Turn on and off switch with Web Sockets!!!</h1>
+
+<br>
+<br>
+
+
+  <label for="fname">Value to send:</label>
+  <input type="text" id="fname" name="fname"><br><br>
+
+   <button type = "button" onclick = "actionText();"> Send Text </button>
+<br>
+<br>
+
+<div class="onoffswitch">
+    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" tabindex="0" checked >
+    <label class="onoffswitch-label" for="myonoffswitch">
+        <span class="onoffswitch-inner"></span>
+        <span class="onoffswitch-switch"></span>
+    </label>
+</div>
+  <label for="lname">Received Value:</label>
+  <input type="text" id="lname" name="lname"><br><br>
+<script>
+    //document.getElementById("fname").value
+
+        const js = document.querySelector('#myonoffswitch');
+        js.onclick = () => {
+           console.log("Socket is: " + js.checked);
+           if (js.checked == true)
+                socket.emit('event', "true");
+           else
+                socket.emit('event', "false");
+
+        };
+
+
+</script>
+
+
+
+
+</body>
+</html>
