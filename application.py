@@ -3,9 +3,9 @@ from flask import Flask, render_template,request
 from flask_socketio import SocketIO,emit,namespace
 import time
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
+application = Flask(__name__)
+application.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(application)
 
 @socketio.on('event', namespace='/test')
 def event(json):
@@ -28,12 +28,12 @@ def error_handler(e):
     pass
 
 
-@app.route("/")
+@application.route("/")
 def index():
     return render_template("index.html")
 
 
-@app.route('/api',methods=['GET', 'PUT'])
+@application.route('/api',methods=['GET', 'PUT'])
 def api():
     userID = user = request.args.get('userID')
     if (not userID):
@@ -66,5 +66,5 @@ def api():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    application.run(debug=True)
     #socketio.run(app,allow_unsafe_werkzeug=True )
